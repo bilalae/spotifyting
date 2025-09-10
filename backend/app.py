@@ -16,8 +16,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ---------------- Spotify API Setup ----------------
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="d048a8d239e746f08e19d0f2b8fc41c7",
+    client_secret="d048a8d239e746f08e19d0f2b8fc41c",
     redirect_uri="http://127.0.0.1:8888/callback",
     scope="user-read-playback-state user-read-currently-playing user-top-read"
 ))
@@ -85,6 +85,9 @@ def upload_zip():
         AllHistory["ms_played"] = AllHistory["ms_played"].fillna(0) / 60000
         AllHistory["ts"] = pd.to_datetime(AllHistory["ts"], errors="coerce").dt.tz_localize(None)
 
+        #Only consider songs played more than 15s:
+        AllHistory = AllHistory[AllHistory['ms_played'] >= 0.25]
+
         # Apply timeframe filter
         now = datetime.now()
         if timeframe == "30_days":
@@ -98,13 +101,24 @@ def upload_zip():
         if AllHistory.empty:
             return jsonify({"error": "No listening history in this timeframe"}), 400
 
+        #skips
+        skips = AllHistory[AllHistory["ms_played"] < 15]
+        #Count how many times each track was listened overall
+        track_counts = AllHistory['master_metadata_track_name'].value_counts()
+        #Filter skips to only include tracks listened at least, say, 3 times overall
+        skips_regular = skips[skips['master_metadata_track_name'].isin(track_counts[track_counts >= 3].index)] #this means semi regular songs are shown to be skipped
+        #get least skipped among those
+        least_skipped = skips_regular['master_metadata_track_name'].value_counts().sort_values().head(10).to_dict()
+
         json_stats = {
             "timeframe": timeframe,
             "amount_of_tracks": int(AllHistory["master_metadata_track_name"].count()),
             "total_listening_hours": round(float(AllHistory["ms_played"].sum() / 60), 2),
             "avg_track_duration": round(float(AllHistory["ms_played"].mean() or 0), 2),
             "top_10_artists": AllHistory["master_metadata_album_artist_name"].value_counts().head(10).to_dict(),
-            "top_10_songs": AllHistory["master_metadata_track_name"].value_counts().head(10).to_dict()
+            "top_10_songs": AllHistory["master_metadata_track_name"].value_counts().head(10).to_dict(),
+            "most_skipped": skips_regular,
+            "least_skipped": least_skipped
         }
 
         return jsonify(json_stats)
