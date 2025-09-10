@@ -17,7 +17,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # ---------------- Spotify API Setup ----------------
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id="d048a8d239e746f08e19d0f2b8fc41c7",
-    client_secret="d048a8d239e746f08e19d0f2b8fc41c",
+    client_secret="119dd15ab5ce45278d820496c91e50cc",
     redirect_uri="http://127.0.0.1:8888/callback",
     scope="user-read-playback-state user-read-currently-playing user-top-read"
 ))
@@ -109,6 +109,8 @@ def upload_zip():
         skips_regular = skips[skips['master_metadata_track_name'].isin(track_counts[track_counts >= 3].index)] #this means semi regular songs are shown to be skipped
         #get least skipped among those
         least_skipped = skips_regular['master_metadata_track_name'].value_counts().sort_values().head(10).to_dict()
+        # Convert skips_regular to dictionary counts
+        most_skipped_dict = skips_regular['master_metadata_track_name'].value_counts().to_dict()
 
         json_stats = {
             "timeframe": timeframe,
@@ -117,7 +119,7 @@ def upload_zip():
             "avg_track_duration": round(float(AllHistory["ms_played"].mean() or 0), 2),
             "top_10_artists": AllHistory["master_metadata_album_artist_name"].value_counts().head(10).to_dict(),
             "top_10_songs": AllHistory["master_metadata_track_name"].value_counts().head(10).to_dict(),
-            "most_skipped": skips_regular,
+            "most_skipped": most_skipped_dict,
             "least_skipped": least_skipped
         }
 
@@ -142,6 +144,8 @@ def api_stats():
 
 
 # ---------------- Spotify API Raw Endpoint ----------------
+from flask_cors import cross_origin
+
 @app.route("/current_track", methods=["GET"])
 def current_track():
     current = sp.current_playback()
@@ -149,6 +153,7 @@ def current_track():
         return jsonify(current)
     else:
         return jsonify({"error": "Nothing is currently playing"}), 404
+
 
 
 if __name__ == "__main__":
