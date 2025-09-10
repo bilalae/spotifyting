@@ -10,7 +10,6 @@ from spotipy.oauth2 import SpotifyOAuth
 # ---------------- Flask Setup ----------------
 app = Flask(__name__)
 CORS(app)
-
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -85,7 +84,6 @@ def upload_zip():
         AllHistory["ms_played"] = AllHistory["ms_played"].fillna(0) / 60000
         AllHistory["ts"] = pd.to_datetime(AllHistory["ts"], errors="coerce").dt.tz_localize(None)
 
-        # Apply timeframe filter
         now = datetime.now()
         if timeframe == "30_days":
             AllHistory = AllHistory[AllHistory["ts"] >= now - timedelta(days=30)]
@@ -94,7 +92,6 @@ def upload_zip():
         elif timeframe == "1_year":
             AllHistory = AllHistory[AllHistory["ts"] >= now - timedelta(days=365)]
 
-        # Handle empty dataset
         if AllHistory.empty:
             return jsonify({"error": "No listening history in this timeframe"}), 400
 
@@ -125,17 +122,6 @@ def api_stats():
     }
 
     return jsonify(api_stats)
-
-
-# ---------------- Spotify API Raw Endpoint ----------------
-@app.route("/current_track", methods=["GET"])
-def current_track():
-    current = sp.current_playback()
-    if current:
-        return jsonify(current)
-    else:
-        return jsonify({"error": "Nothing is currently playing"}), 404
-
 
 if __name__ == "__main__":
     app.run(debug=True)
