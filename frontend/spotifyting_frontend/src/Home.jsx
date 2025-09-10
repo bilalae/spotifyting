@@ -54,7 +54,7 @@ const Home = () => {
         }
         setResults(data);
       })
-      .catch(() => setError("Upload error"));
+      .catch((err) => setError(`Upload error ${err.message}`));
   };
 
   useEffect(() => {
@@ -66,11 +66,21 @@ const Home = () => {
 
   return (
     <div className="flex flex-col gap-4 p-6">
-      <div className="flex flex-col gap-4 p-6s items-center">
+      {/* Header section */}
+      <div className="flex flex-col gap-4 p-6 items-center">
         <img src={SpotifyLogo} alt="" width={80} className="mt-8" />
-        <div className="font-bold text-4xl justify-center flex gap-2 ">
-          <p className="text-green-400">Spotify</p>Listening Stats
-        </div>
+
+       <div className="font-bold text-4xl text-center">
+  <p className="bg-gradient-to-r from-green-400 via-teal-300 to-green-200 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)] leading-[1.3]">
+    Spotify
+  </p>
+  <p className="bg-gradient-to-r from-green-400 via-teal-300 to-green-200 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)] leading-[1.3]">
+    Listening Stats
+  </p>
+</div>
+
+
+
 
         <div className="font-semibold text-xl text-center">
           Upload your lifetime Spotify data (get it from{" "}
@@ -84,38 +94,72 @@ const Home = () => {
         </div>
 
         {/* File input */}
-        <input
-          type="file"
-          accept=".zip"
-          onChange={handleFileChange}
-          className="hidden"
-          id="fileInput"
-        />
-        <label
-          htmlFor="fileInput"
-          className="bg-gray-200 text-black rounded-xl shadow-lg text-xl font-semibold py-2 px-4 cursor-pointer"
-        >
-          Choose file
-        </label>
+       <input
+  type="file"
+  accept=".zip"
+  onChange={handleFileChange}
+  className="hidden"
+  id="fileInput"
+/>
+
+<label
+  htmlFor="fileInput"
+  className="relative inline-block cursor-pointer
+             bg-white/20 backdrop-blur-md border border-white/30 
+             text-white rounded-xl shadow-xl text-xl font-semibold 
+             py-2 px-4 overflow-visible"
+>
+  <span className="relative z-10 bg-gradient-to-r from-white/90 via-emerald-100 to-white/90 bg-clip-text text-transparent drop-shadow-[0_1px_3px_rgba(255,255,255,0.5)]">
+    Choose file
+  </span>
+
+  {/* Glossy shine overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-white/30 to-transparent pointer-events-none rounded-xl"></div>
+</label>
+
 
         {/* Timeframe dropdown */}
-        <select
-          value={timeframe}
-          onChange={(e) => setTimeframe(e.target.value)}
-          className="bg-white border rounded-lg p-2 text-black shadow-md"
-        >
-          <option value="lifetime">Lifetime</option>
-          <option value="30_days">Last 30 Days</option>
-          <option value="1_year">Last 1 Year</option>
-          <option value="6_months">Last 6 Months</option>
-        </select>
+        <div className="relative inline-block rounded-lg overflow-hidden">
+  <select
+    value={timeframe}
+    onChange={(e) => setTimeframe(e.target.value)}
+    className="relative z-10 bg-white/20 backdrop-blur-md border border-white/30 
+               rounded-lg p-2 pr-8 text-white shadow-xl appearance-none 
+               focus:outline-none focus:ring-2 focus:ring-white/40"
+  >
+    <option value="lifetime" className="bg-gray-900">Lifetime</option>
+    <option value="30_days" className="bg-gray-900">Last 30 Days</option>
+    <option value="1_year" className="bg-gray-900">Last 1 Year</option>
+    <option value="6_months" className="bg-gray-900">Last 6 Months</option>
+  </select>
 
-        <button
-          onClick={handleUpload}
-          className="bg-blue-700 text-white rounded-xl shadow-lg text-2xl font-bold py-2 px-6 hover:bg-blue-800"
-        >
-          {results ? "Update" : "Upload & Analyze"}
-        </button>
+  {/* glossy highlight */}
+  <div className="absolute inset-0 pointer-events-none">
+    <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-lg"></div>
+  </div>
+</div>
+
+
+
+      <button
+  onClick={handleUpload}
+  className="relative rounded-xl py-2 px-6 text-2xl font-bold
+             bg-green-400/20 text-white border border-white/20 
+             backdrop-blur-sm shadow-lg hover:bg-green-400/40 
+             transition-all duration-200 overflow-visible"
+>
+  <span className="relative z-10 bg-gradient-to-r from-white/90 via-emerald-100 to-white/90 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)]">
+    {results ? "Update" : "Upload & Analyze"}
+  </span>
+
+  {/* Glossy highlight overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-white/30 to-transparent pointer-events-none rounded-xl"></div>
+</button>
+
+
+
+
+
 
         {file && <p className="text-sm mt-2">Selected: {file.name}</p>}
         {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
@@ -123,85 +167,134 @@ const Home = () => {
 
       {/* Results */}
       {results && (
-        <div className="mt-6 flex flex-col max-w-3/4 mx-auto">
-          <h3 className="text-4xl font-bold mb-2 text-center text-white flex gap-2">
-            Stats{" "}
-            <p className="text-green-400">
-              ({results.timeframe.replace("_", " ")})
+        <div className="flex flex-col mx-auto">
+          <div className="relative border border-white/20 bg-white/10 backdrop-blur-md 
+                md:w-fit md:mx-auto rounded-2xl px-2 md:px-8 py-6 mb-6 mx-2 md:m-4 
+                shadow-xl overflow-hidden">
+  
+  {/* Glossy highlight overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none rounded-2xl"></div>
+
+  <div className="text-4xl font-bold mb-2 text-center justify-center text-white flex gap-2 relative z-10">
+    Stats{" "}
+    <p className="text-center bg-gradient-to-r from-white/90 via-emerald-200 to-green-400 bg-clip-text text-transparent drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]">
+  ({results.timeframe.replace("_", " ")})
+</p>
+
+  </div>
+
+  <div className="text-xl font-semibold flex flex-col gap-1 text-center relative z-10">
+    <p>Total Tracks: {results.amount_of_tracks}</p>
+    <p>Total Hours: {Math.floor(results.total_listening_hours)}</p>
+    <p>Average Track Duration (min): {results.avg_track_duration}</p>
+  </div>
+</div>
+
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-0">
+            {/* Top Artists */}
+            <div className="relative border border-white/10 bg-white/5 backdrop-blur-md 
+                rounded-2xl px-2 md:px-8 pb-4 m-2 md:m-8 shadow-xl overflow-hidden">
+  
+  {/* Glossy highlight overlay */}
+  <div className="absolute inset-0 bg-gradient-to-tr from-white/15 to-transparent pointer-events-none rounded-2xl"></div>
+
+  <h4 className="text-4xl mb-4 mt-10 text-center font-bold bg-gradient-to-r from-emerald-300 via-emerald-200 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)] relative z-10 leading-[1.5]">
+  Top Artists Played
+</h4>
+
+
+  <ul className="text-center text-xl flex flex-col justify-center gap-2 mt-2 relative z-10">
+    {Object.entries(results.top_10_artists)
+      .sort((a, b) => b[1] - a[1])
+      .map(([artist, count], index) => (
+        <li
+          key={artist}
+          className="flex flex-col gap-2 font-semibold 
+                     bg-white/5 hover:bg-white/10 backdrop-blur-sm 
+                     transition-all duration-200 rounded-xl p-4 relative z-10"
+        >
+          <div className="flex justify-between items-center">
+            <p className={index < 3 ? "text-teal-300" : "text-white/90"}>
+              {artist}{" "}
+              {index < 3 && (
+                <span className="text-teal-300">★</span>
+              )}
             </p>
-          </h3>
-
-          <div className="text-xl font-semibold flex flex-col gap-1 text-center">
-            <p>Total Tracks: {results.amount_of_tracks}</p>
-            <p>Total Hours: {Math.floor(results.total_listening_hours)}</p>
-            <p>Average Track Duration (min): {results.avg_track_duration}</p>
+            <p className="text-teal-300">{count}</p>
           </div>
-
-          {/* Top Artists */}
-          <div className="border-1 border-gray-700 bg-gray-950 rounded-2xl p-8">
-            <h4 className="text-4xl mb-4 text-center font-bold mt-10 text-green-200">
-              Top Artists Played
-            </h4>
-            <ul className="text-center text-xl flex flex-col justify-center gap-2 mt-2">
-              {Object.entries(results.top_10_artists)
-                .sort((a, b) => b[1] - a[1])
-                .map(([artist, count], index) => (
-                  <li
-                    key={artist}
-                    className="flex flex-col gap-2 font-semibold bg-gray-900 hover:bg-gray-950 transition-all duration-200 rounded-xl p-4"
-                  >
-                    <div className="flex justify-between items-center">
-                      <p className={index === 0 ? "text-yellow-300" : ""}>
-                        {artist} {index < 3 && <span className="text-yellow-300">★</span>}
-                      </p>
-                      <p className="text-green-200">{count}</p>
-                    </div>
-                    <div className="w-full bg-gray-700 rounded-full h-1.5">
-                      <div
-                        className={`h-1.5 rounded-full ${
-                          index < 3 ? "bg-green-400" : "bg-green-500"
-                        }`}
-                        style={{
-                          width: maxCount ? `${(count / maxCount) * 100}%` : "0%",
-                        }}
-                      />
-                    </div>
-                  </li>
-                ))}
-            </ul>
+          <div className="w-full bg-white/10 rounded-full h-1.5">
+            <div
+              className={`h-1.5 rounded-full ${
+                index < 3 ? "bg-teal-400" : "bg-teal-500"
+              }`}
+              style={{
+                width: maxCount
+                  ? `${(count / maxCount) * 100}%`
+                  : "0%",
+              }}
+            />
           </div>
+        </li>
+      ))}
+  </ul>
+</div>
 
-          {/* Top Songs */}
-          <h4 className="text-4xl mb-4 text-center font-bold mt-10 text-amber-200">
-            Top Songs Played
-          </h4>
-          <ul className="text-center text-xl flex flex-col justify-center gap-2 mt-2">
-            {Object.entries(results.top_10_songs)
-              .sort((a, b) => b[1] - a[1])
-              .map(([song, count], index) => (
-                <li
-                  key={song}
-                  className="flex flex-col gap-2 font-semibold bg-gray-900 hover:bg-gray-950 transition-all duration-200 rounded-xl p-4"
-                >
-                  <div className="flex justify-between items-center">
-                    <p className={index === 0 ? "text-yellow-300" : ""}>
-                      {song} {index < 3 && <span className="text-yellow-300">★</span>}
-                    </p>
-                    <p className="text-amber-200">{count}</p>
-                  </div>
-                  <div className="w-full bg-gray-700 rounded-full h-1.5">
-                    <div
-                      className={`h-1.5 rounded-full ${
-                        index < 3 ? "bg-yellow-400" : "bg-amber-500"
-                      }`}
-                      style={{
-                        width: maxSongCount ? `${(count / maxSongCount) * 100}%` : "0%",
-                      }}
-                    />
-                  </div>
-                </li>
-              ))}
-          </ul>
+
+
+
+
+            {/* Top Songs */}
+            <div className="relative border border-white/10 bg-white/5 backdrop-blur-md 
+                rounded-2xl px-2 md:px-8 pb-4 m-2 md:m-8 shadow-xl overflow-hidden">
+  
+  {/* Glossy highlight overlay */}
+  <div className="absolute inset-0 bg-gradient-to-tr from-white/15 to-transparent pointer-events-none rounded-2xl"></div>
+
+  <h4 className="text-4xl mb-4 mt-10 text-center font-bold bg-gradient-to-r from-emerald-300 via-emerald-200 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)] relative z-10 leading-[1.5]">
+  Top Songs Played
+</h4>
+
+
+  <ul className="text-center text-xl flex flex-col justify-center gap-2 mt-2 relative z-10">
+    {Object.entries(results.top_10_songs)
+      .sort((a, b) => b[1] - a[1])
+      .map(([song, count], index) => (
+        <li
+          key={song}
+          className="flex flex-col gap-2 font-semibold 
+                     bg-white/10 hover:bg-white/20 backdrop-blur-sm 
+                     transition-all duration-200 rounded-xl p-4 relative z-10"
+        >
+          <div className="flex justify-between items-center">
+            <p className={index === 0 ? "text-emerald-300" : "text-white/90"}>
+              {song}{" "}
+              {index < 3 && (
+                <span className="text-emerald-300">★</span>
+              )}
+            </p>
+            <p className="text-white/90">{count}</p>
+          </div>
+          <div className="w-full bg-white/20 rounded-full h-1.5">
+            <div
+              className={`h-1.5 rounded-full ${
+                index < 3 ? "bg-emerald-400" : "bg-emerald-500"
+              }`}
+              style={{
+                width: maxSongCount
+                  ? `${(count / maxSongCount) * 100}%`
+                  : "0%",
+              }}
+            />
+          </div>
+        </li>
+      ))}
+  </ul>
+</div>
+
+
+
+
+          </div>
         </div>
       )}
     </div>
