@@ -16,8 +16,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ---------------- Spotify API Setup ----------------
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id="d048a8d239e746f08e19d0f2b8fc41c7",
-    client_secret="119dd15ab5ce45278d820496c91e50cc",
+    client_id=os.getenv("SPOTIPY_CLIENT_ID"),
+    client_secret=os.getenv("SPOTIPY_CLIENT_SECRET"),
     redirect_uri="http://127.0.0.1:8888/callback",
     scope="user-read-playback-state user-read-currently-playing user-top-read"
 ))
