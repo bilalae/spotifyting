@@ -9,7 +9,7 @@ from spotipy.oauth2 import SpotifyOAuth
 
 # ---------------- Flask Setup ----------------
 app = Flask(__name__)
-CORS(app)
+CORS(app)   # Allow all origins for all routes
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -158,3 +158,4 @@ def current_track():
 
 if __name__ == "__main__":
     app.run(debug=True)
+

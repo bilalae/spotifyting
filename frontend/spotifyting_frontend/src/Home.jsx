@@ -60,23 +60,23 @@ const Home = () => {
       .catch((err) => setError(`Upload error ${err.message}`));
   };
 
-  useEffect(() => {
-  const fetchCurrentTrack = () => {
-    fetch("http://127.0.0.1:5000/current_track")
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.error) {
-          setCurrentTrack(data);
-        }
-      })
-      .catch((err) => setError("Error fetching current track:", err));
+useEffect(() => {
+  const fetchCurrentTrack = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/current_track");
+      const data = await res.json();
+      if (!data.error) setCurrentTrack(data);
+    } catch (err) {
+      console.error("Error fetching current track:", err);
+    }
   };
 
-  fetchCurrentTrack(); // initial fetch
+  fetchCurrentTrack(); // fetch immediately
 
   const interval = setInterval(fetchCurrentTrack, 15000); // refresh every 15s
   return () => clearInterval(interval);
 }, []);
+
 
   useEffect(() => {
     if (error) {
@@ -188,29 +188,22 @@ const Home = () => {
 
 
 { /* Current Track */}
-          {currentTrack && currentTrack.is_playing && (
-  <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md rounded-xl p-4 my-4 shadow-lg">
+          {currentTrack && currentTrack.item && (
+  <div className="flex items-center gap-4">
     <img
-      src={currentTrack.album_art_url}
-      alt={currentTrack.track_name}
-      className="w-16 h-16 rounded-lg"
+      src={currentTrack.item.album.images[0].url}
+      alt="Album Art"
+      className="w-16 h-16 rounded"
     />
-    <div className="flex flex-col">
-      <p className="text-white font-bold text-lg">
-        {currentTrack.track_name}
+    <div>
+      <p className="font-bold text-white">{currentTrack.item.name}</p>
+      <p className="text-gray-300">
+        {currentTrack.item.artists.map(a => a.name).join(", ")}
       </p>
-      <p className="text-white/80">{currentTrack.artist_name}</p>
-      <div className="w-full bg-white/20 h-1 rounded-full mt-2">
-        <div
-          className="bg-green-400 h-1 rounded-full"
-          style={{
-            width: `${(currentTrack.progress_ms / currentTrack.duration_ms) * 100}%`,
-          }}
-        />
-      </div>
     </div>
   </div>
 )}
+
 
       {/* Results */}
       {results && (
