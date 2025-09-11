@@ -189,7 +189,14 @@ useEffect(() => {
 
 { /* Current Track */}
           {currentTrack && currentTrack.item && (
-  <div className="flex items-center gap-4">
+  <div className="flex items-center justify-center flex-col gap-2">
+    <div>
+      <p className="text-green-400 font-semibold ">Currently Playing:</p>
+    </div>
+
+    <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md 
+                border border-white/20 rounded-xl p-4 shadow-lg">
+
     <img
       src={currentTrack.item.album.images[0].url}
       alt="Album Art"
@@ -201,6 +208,8 @@ useEffect(() => {
         {currentTrack.item.artists.map(a => a.name).join(", ")}
       </p>
     </div>
+        </div>
+
   </div>
 )}
 
