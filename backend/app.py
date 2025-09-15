@@ -12,7 +12,7 @@ load_dotenv()
 
 # ---------------- Flask Setup ----------------
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5000", "http://localhost:5000"])
 app.secret_key = "super_secret_key"  # Needed for per-user sessions
 
 UPLOAD_FOLDER = "uploads"
