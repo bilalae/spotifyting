@@ -12,8 +12,14 @@ load_dotenv()
 
 # ---------------- Flask Setup ----------------
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=["http://127.0.0.1:5000", "http://localhost:5000"])
-app.secret_key = "super_secret_key"  # Needed for per-user sessions
+CORS(app, supports_credentials=True, origins=[
+    "http://127.0.0.1:5000",
+    "http://localhost:5000",
+    "http://127.0.0.1:5173",
+    "http://localhost:5173"
+])
+
+app.secret_key = "s545544646"  # Needed for per-user sessions
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -175,3 +181,4 @@ def upload_zip():
 # ---------------- Main ----------------
 if __name__ == "__main__":
     app.run(debug=True)
+

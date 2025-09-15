@@ -3,6 +3,8 @@ import SpotifyLogo from "./assets/spotifylogo.png"; // Make sure the logo is in 
 
 const API_BASE = "http://127.0.0.1:5000";
 
+
+
 const Home = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
@@ -77,7 +79,7 @@ const Home = () => {
 };
 
     fetchCurrentTrack(); // initial fetch
-    const interval = setInterval(fetchCurrentTrack, 15000);
+    const interval = setInterval(fetchCurrentTrack, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -161,22 +163,44 @@ const Home = () => {
         {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
       </div>
 
-      {/* Current Track */}
-      {currentTrack && currentTrack.item && (
-        <div className="flex items-center gap-4">
-          <img
-            src={currentTrack.item.album.images[0].url}
-            alt="Album Art"
-            className="w-16 h-16 rounded"
-          />
-          <div>
-            <p className="font-bold text-white">{currentTrack.item.name}</p>
-            <p className="text-gray-300">
-              {currentTrack.item.artists.map((a) => a.name).join(", ")}
-            </p>
-          </div>
-        </div>
-      )}
+        {/* Current Track */}
+{currentTrack?.item && (
+  <div className="relative border border-white/20 bg-white/10 backdrop-blur-xl 
+                  md:w-fit md:mx-auto rounded-3xl p-6 mb-6 shadow-2xl
+                  flex flex-col items-center gap-6 transition-all duration-300 hover:bg-white/15">
+    
+
+    {/* Album & Info */}
+    <div className="flex items-center gap-5">
+      <img
+        src={currentTrack.item.album.images[0].url}
+        alt="Album Art"
+        className="w-20 h-20 rounded-2xl shadow-lg ring-1 ring-white/20"
+      />
+      <div>
+        <p className="font-bold text-white text-xl leading-tight">
+          {currentTrack.item.name}
+        </p>
+        <p className="text-gray-300 text-sm mt-1">
+          {currentTrack.item.artists.map((a) => a.name).join(", ")}
+        </p>
+      </div>
+    </div>
+
+    {/* Progress Bar */}
+    <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden shadow-inner">
+      <div
+        className="h-2 rounded-full bg-gradient-to-r from-green-400 via-emerald-400 to-lime-400 transition-all duration-300"
+        style={{
+          width: currentTrack.item.duration_ms
+            ? `${(currentTrack.progress_ms / currentTrack.item.duration_ms) * 100}%`
+            : "0%",
+        }}
+      />
+    </div>
+  </div>
+)}
+
 
       {/* Results */}
       {results && (
