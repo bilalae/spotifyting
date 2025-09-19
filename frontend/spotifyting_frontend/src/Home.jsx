@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import SpotifyLogo from "./assets/spotifylogo.png"; // Make sure the logo is in /public
-
+import SkipButton from "./player/SkipButton";
+import PreviousButton from "./player/PreviousButton";
+import { Pause } from "lucide-react";
+import PlayPauseButton from "./player/PlayPauseButton";
+import PlayerCard from "./player/PlayerCard";
 const API_BASE = "http://127.0.0.1:5000";
 
 
@@ -10,7 +14,6 @@ const Home = () => {
   const [error, setError] = useState("");
   const [results, setResults] = useState(null);
   const [timeframe, setTimeframe] = useState("lifetime");
-  const [currentTrack, setCurrentTrack] = useState(null);
 
   // Compute max values for bar widths
   const maxCount = useMemo(() => {
@@ -61,27 +64,7 @@ const Home = () => {
       .catch((err) => setError(`Upload error: ${err.message}`));
   };
 
-  // Poll current track every 15 seconds
-  useEffect(() => {
-    const fetchCurrentTrack = async () => {
-  try {
-    const res = await fetch(`${API_BASE}/current_track`, {
-      method: "GET", 
-       credentials: "include" 
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (!data.error) setCurrentTrack(data);
-    else console.warn("Spotify API error:", data.error);
-  } catch (err) {
-    console.error("Error fetching current track:", err);
-  }
-};
 
-    fetchCurrentTrack(); // initial fetch
-    const interval = setInterval(fetchCurrentTrack, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Auto-clear error after 2s
   useEffect(() => {
@@ -164,42 +147,7 @@ const Home = () => {
       </div>
 
         {/* Current Track */}
-{currentTrack?.item && (
-  <div className="relative border border-white/20 bg-white/10 backdrop-blur-xl 
-                  md:w-fit md:mx-auto rounded-3xl p-6 mb-6 shadow-2xl
-                  flex flex-col items-center gap-6 transition-all duration-300 hover:bg-white/15">
-    
-
-    {/* Album & Info */}
-    <div className="flex items-center gap-5">
-      <img
-        src={currentTrack.item.album.images[0].url}
-        alt="Album Art"
-        className="w-20 h-20 rounded-2xl shadow-lg ring-1 ring-white/20"
-      />
-      <div>
-        <p className="font-bold text-white text-xl leading-tight">
-          {currentTrack.item.name}
-        </p>
-        <p className="text-gray-300 text-sm mt-1">
-          {currentTrack.item.artists.map((a) => a.name).join(", ")}
-        </p>
-      </div>
-    </div>
-
-    {/* Progress Bar */}
-    <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden shadow-inner">
-      <div
-        className="h-2 rounded-full bg-gradient-to-r from-green-400 via-emerald-400 to-lime-400 transition-all duration-300"
-        style={{
-          width: currentTrack.item.duration_ms
-            ? `${(currentTrack.progress_ms / currentTrack.item.duration_ms) * 100}%`
-            : "0%",
-        }}
-      />
-    </div>
-  </div>
-)}
+       <PlayerCard />
 
 
       {/* Results */}
