@@ -4,17 +4,17 @@ import SkipButton from "./player/SkipButton";
 import PreviousButton from "./player/PreviousButton";
 import { Pause } from "lucide-react";
 import PlayPauseButton from "./player/PlayPauseButton";
+import useCurrentTrack from "./hooks/useCurrentTrack";
+
 import PlayerCard from "./player/PlayerCard";
 const API_BASE = "http://127.0.0.1:5000";
-
-
 
 const Home = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [results, setResults] = useState(null);
   const [timeframe, setTimeframe] = useState("lifetime");
-
+  const { track } = useCurrentTrack();
   // Compute max values for bar widths
   const maxCount = useMemo(() => {
     if (!results?.top_10_artists) return 0;
@@ -63,8 +63,6 @@ const Home = () => {
       })
       .catch((err) => setError(`Upload error: ${err.message}`));
   };
-
-
 
   // Auto-clear error after 2s
   useEffect(() => {
@@ -144,11 +142,26 @@ const Home = () => {
 
         {file && <p className="text-sm mt-2">Selected: {file.name}</p>}
         {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+
+        {/* Login with Spotify */}
+      {!track &&
+      <button
+        onClick={() =>
+    window.open(`${API_BASE}/login`, "_blank", "noopener,noreferrer")
+  } // Your backend login endpoint
+        className="relative mt-6 inline-flex items-center gap-2 cursor-pointer bg-green-400/20 
+             backdrop-blur-md border border-white/20 text-white rounded-xl shadow-xl
+             text-xl font-semibold py-2 px-6 hover:bg-green-400/40 transition-all duration-200"
+      >
+        <img src={SpotifyLogo} alt="Spotify" className="w-6 h-6" />
+        Login with Spotify
+      </button>}
       </div>
+      
 
-        {/* Current Track */}
-       <PlayerCard />
-
+      
+      {/* Current Track */}
+      <PlayerCard />
 
       {/* Results */}
       {results && (
@@ -184,7 +197,11 @@ const Home = () => {
                       className="flex flex-col gap-2 font-semibold bg-white/5 hover:bg-white/10 rounded-xl p-4"
                     >
                       <div className="flex justify-between items-center">
-                        <p className={index < 3 ? "text-teal-300" : "text-white/90"}>
+                        <p
+                          className={
+                            index < 3 ? "text-teal-300" : "text-white/90"
+                          }
+                        >
                           {artist} {index < 3 && "★"}
                         </p>
                         <p className="text-teal-300">{count}</p>
@@ -195,7 +212,9 @@ const Home = () => {
                             index < 3 ? "bg-teal-400" : "bg-teal-500"
                           }`}
                           style={{
-                            width: maxCount ? `${(count / maxCount) * 100}%` : "0%",
+                            width: maxCount
+                              ? `${(count / maxCount) * 100}%`
+                              : "0%",
                           }}
                         />
                       </div>
@@ -218,7 +237,11 @@ const Home = () => {
                       className="flex flex-col gap-2 font-semibold bg-white/10 hover:bg-white/20 rounded-xl p-4"
                     >
                       <div className="flex justify-between items-center">
-                        <p className={index < 3 ? "text-emerald-300" : "text-white/90"}>
+                        <p
+                          className={
+                            index < 3 ? "text-emerald-300" : "text-white/90"
+                          }
+                        >
                           {song} {index < 3 && "★"}
                         </p>
                         <p className="text-white/90">{count}</p>
