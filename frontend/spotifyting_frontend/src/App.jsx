@@ -42,7 +42,7 @@ console.log(most_skipped)
         </div>
         </div>
       }
-      <MostSkipped most_skipped={most_skipped}/>
+      {/* <MostSkipped most_skipped={most_skipped}/> */}
       <Login />
       <PlayerCard />
     </div>
