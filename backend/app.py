@@ -18,7 +18,11 @@ load_dotenv()
 
 # ---------------- Flask Setup ----------------
 app = Flask(__name__)
-CORS(app)
+from flask_cors import CORS
+
+# Allow credentials and specify origin
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://127.0.0.1:5173"}})
+
 
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecret")
 
