@@ -1,1 +1,46 @@
+
 @import "tailwindcss";
+@plugin "daisyui"{
+    themes: "spotify";
+}
+
+
+
+@plugin "daisyui/theme" {
+  name: "spotify";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(27% 0.041 260.031);
+  --color-base-200: oklch(20% 0.042 265.755);
+  --color-base-300: oklch(12% 0.042 264.695);
+  --color-base-content: oklch(96% 0.007 247.896);
+  --color-primary: oklch(72% 0.219 149.579);
+  --color-primary-content: oklch(96% 0.007 247.896);
+  --color-secondary: oklch(76% 0.177 163.223);
+  --color-secondary-content: oklch(98% 0.003 247.858);
+  --color-accent: oklch(76% 0.233 130.85);
+  --color-accent-content: oklch(20% 0.042 265.755);
+  --color-neutral: oklch(20% 0.042 265.755);
+  --color-neutral-content: oklch(96% 0.007 247.896);
+  --color-info: oklch(71% 0.143 215.221);
+  --color-info-content: oklch(100% 0 0);
+  --color-success: oklch(72% 0.219 149.579);
+  --color-success-content: oklch(0% 0 0);
+  --color-warning: oklch(76% 0.188 70.08);
+  --color-warning-content: oklch(0% 0 0);
+  --color-error: oklch(58% 0.253 17.585);
+  --color-error-content: oklch(100% 0 0);
+  --radius-selector: 2rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1.5px;
+  --depth: 1;
+  --noise: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}

@@ -29,12 +29,12 @@ export default function PreviousButton() {
       <button
         onClick={handlePrevious}
         disabled={loading}
-        className={`p-3 rounded-full border border-white/20
+        className={`p-2 rounded-full border border-white/20
           bg-white/10 backdrop-blur-md shadow-lg transition-all duration-200
           hover:bg-white/20 hover:scale-105 active:scale-95
           ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <Rewind className="text-white" size={20} />
+        <Rewind className="text-white" size={15} />
       </button>
       {error && (
         <p className="text-red-400 text-xs text-center px-2">{error}</p>

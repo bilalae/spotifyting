@@ -32,14 +32,14 @@ const togglePlayback = async () => {
       <button
         onClick={togglePlayback}
        
-        className={`p-3 rounded-full border border-white/20
+        className={`p-2 rounded-full border border-white/20
           bg-white/10 backdrop-blur-md shadow-lg transition-all duration-200
           hover:bg-white/20 hover:scale-105 active:scale-95`}
       >
         {isPlaying ? (
-          <Pause className="text-white" size={20} />
+          <Pause className="text-white" size={15} />
         ) : (
-          <Play className="text-white" size={20} />
+          <Play className="text-white" size={15} />
         )}
       </button>
       {error && (
