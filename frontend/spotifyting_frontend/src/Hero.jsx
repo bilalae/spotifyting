@@ -14,7 +14,7 @@ const Hero = () => {
 
         <div className='stats stats-vertical shadow mt-10'>
             <div className='stat'>
-                <div className='stat-figure text-secondary'>
+                <div className='stat-figure text-secondary hover:animate-spin'>
                 <PlayCircle className='h-8 w-8'/>
 
                 </div>
@@ -26,7 +26,7 @@ const Hero = () => {
             </div>
 
             <div className='stat'>
-                <div className='stat-figure text-secondary'>
+                <div className='stat-figure text-secondary hover:rotate-z-3'>
                 <Music className='h-8 w-8'/>
                 </div>
                 <div className='stat-title text-primary'>Top Genre</div>

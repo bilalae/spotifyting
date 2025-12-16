@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SpotifyLogo from "./assets/spotifylogo.png"
-import { FastForwardIcon, ForwardIcon, Pause, Play, Rewind, RewindIcon, SkipForward } from "lucide-react";
+import { FastForwardIcon, ForwardIcon, Pause, PauseIcon, Play, PlayIcon, Rewind, RewindIcon, SkipForward } from "lucide-react";
+import Omdb from "../public/overmydeadbody.mp3"
 const Login = () => {
+    const [playing, setPlaying] = useState(false)
+  const audioRef = useRef(null);
+    useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.3; // 🔊 fixed at 30%
+    }
+  }, []);
+    const togglePlay = () => {
+    if (!audioRef.current) return;
+
+    if (playing) {
+      // ⏸️ Pause
+      audioRef.current.pause();
+    } else {
+      // ▶️ Play
+      audioRef.current.play();
+    }
+    setPlaying(prev => !prev);
+  };
   return (
     <section className="flex flex-col lg:flex-row-reverse items-center gap-20 justify-center text-center bg-base-200 py-12" id="login">
         <div className="flex flex-col items-left gap-6">
@@ -35,9 +55,16 @@ const Login = () => {
                     <RewindIcon className="text-amber-300/60" />
                     </button>
 
-                <button className="btn-circle btn btn-ghost">
-                    <Pause className="text-amber-300/60"/>
+                <button className="btn-circle btn btn-ghost" onClick={togglePlay}>
+                   { playing ? 
+                   <PauseIcon className="text-amber-300/60" /> 
+                   : <PlayIcon className="text-amber-300/60"/> }
                 </button>
+                      <audio
+        ref={audioRef}
+        src={Omdb}
+    
+      />
 
                 <button className="btn-circle btn btn-ghost">
                     <FastForwardIcon className="text-amber-300/60"/>

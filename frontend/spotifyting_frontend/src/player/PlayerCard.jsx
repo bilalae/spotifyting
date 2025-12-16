@@ -14,7 +14,7 @@ const [isVisible, setIsVisible] = useState(true);
   const albumUrl = track?.item?.album?.images?.[0]?.url || "";
   const colors = useAlbumColors(albumUrl);
 
-  const primaryRGBA = colors.primary + "20"; // 20% opacity
+  const primaryRGBA = colors.primary + "10"; // 20% opacity
   const secondaryRGBA = colors.secondary + "20";
 
   const [progress, setProgress] = useState(track?.progress_ms || 0);
@@ -73,7 +73,7 @@ const [isVisible, setIsVisible] = useState(true);
                w-screen bg-white/5 backdrop-blur-lg border-t border-white/10
                "
     style={{
-      boxShadow: `0 0px 16px 0px ${primaryRGBA}, 0 0px 16px 0px ${secondaryRGBA}`,
+      boxShadow: `0 0px 80px 0px ${primaryRGBA}, 0 0px 80px 0px ${secondaryRGBA}`,
     }}
   >
     <div className="w-14 h-14 flex-shrink-0 ml-3">

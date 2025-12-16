@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProgressBar = ({ progress = 50, duration = 100, colors = { primary: "#4ade80", secondary: "#22c55e" } }) => {
+const ProgressBar = ({ progress = 50, duration = 100, colors = { primary: "#4ade90", secondary: "#22c55e" } }) => {
   // calculate percentage
   const percentage = duration ? (progress / duration) * 100 : 50;
 

@@ -10,6 +10,7 @@ import TopArtists from './TopArtists'
 import Login from './Login'
 import PlayerCard from './player/PlayerCard'
 import MostSkipped from './MostSkipped'
+
 function App() {
   const [results, setResults] = useState(null);
  console.log(results)
@@ -45,6 +46,7 @@ console.log(most_skipped)
       {/* <MostSkipped most_skipped={most_skipped}/> */}
       <Login />
       <PlayerCard />
+      {/* <Chart /> */}
     </div>
   )
 }
